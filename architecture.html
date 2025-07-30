@@ -3,12 +3,12 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" />
+<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Examples" href="examples.html" /><link rel="prev" title="Graphs" href="graphs.html" />
         <link rel="prefetch" href="_static/images/DataProfilerLogoLightThemeLong.png" as="image" />
         <link rel="prefetch" href="_static/images/DataProfilerDarkLogoLong.png" as="image" />
 
     <link rel="shortcut icon" href="_static/DataProfilerLogoLightTheme.png"/><!-- Generated with Sphinx 7.4.7 and Furo 2025.07.19 -->
-        <title>dataprofiler.plugins package - Data Profiler v0.13.4</title>
+        <title>Architecture &amp; Design Overview - Data Profiler v0.13.4</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=25af2a20" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=8dab3a3b" />
@@ -205,14 +205,14 @@
 </form>
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
   <p class="caption" role="heading"><span class="caption-text">Getting Started:</span></p>
-<ul>
+<ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="index.html">Intro</a></li>
 <li class="toctree-l1"><a class="reference internal" href="install.html">Install</a></li>
 <li class="toctree-l1"><a class="reference internal" href="data_readers.html">Data Readers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="profiler.html">Profiler</a></li>
 <li class="toctree-l1"><a class="reference internal" href="data_labeling.html">Labeler (Sensitive Data)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="graphs.html">Graphs</a></li>
-<li class="toctree-l1"><a class="reference internal" href="architecture.html">Architecture &amp; Design Overview</a></li>
+<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Architecture &amp; Design Overview</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">User Guide:</span></p>
 <ul>
@@ -319,7 +319,7 @@
         </a>
         <div class="content-icon-container">
           <div class="view-this-page">
-  <a class="muted-link" href="_sources/dataprofiler.plugins.rst.txt" title="View this page">
+  <a class="muted-link" href="_sources/architecture.rst.txt" title="View this page">
     <svg><use href="#svg-eye"></use></svg>
     <span class="visually-hidden">View this page</span>
   </a>
@@ -339,47 +339,50 @@
           </label>
         </div>
         <article role="main" id="furo-main-content">
-          <section id="dataprofiler-plugins-package">
-<h1>dataprofiler.plugins package<a class="headerlink" href="#dataprofiler-plugins-package" title="Link to this heading">¶</a></h1>
-<section id="submodules">
-<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading">¶</a></h2>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="dataprofiler.plugins.decorators.html">dataprofiler.plugins.decorators module</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="dataprofiler.plugins.decorators.html#dataprofiler.plugins.decorators.plugin_decorator"><code class="docutils literal notranslate"><span class="pre">plugin_decorator()</span></code></a></li>
-</ul>
-</li>
-</ul>
-</div>
+          <section id="architecture-design-overview">
+<span id="architecture"></span><h1>Architecture &amp; Design Overview<a class="headerlink" href="#architecture-design-overview" title="Link to this heading">¶</a></h1>
+<p>This section describes the design rationale, algorithmic choices, assumptions, testing strategy, and contribution process used in the DataProfiler library.</p>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading">¶</a></h2>
+<p>DataProfiler computes numeric statistics (e.g., mean, variance, skewness, kurtosis) using <strong>streaming algorithms</strong> that allow efficient, incremental updates without recomputing from raw data. Approximate quantile metrics like the median are calculated using histogram-based estimation, making the system scalable for large or streaming datasets.</p>
+<p>Additionally, DataProfiler uses a <strong>Convolutional Neural Network (CNN)</strong> to detect and label entities (e.g., names, emails, credit cards) in unstructured text. This supports critical tasks such as <strong>PII detection</strong>, <strong>schema inference</strong>, and <strong>data quality analysis</strong> across structured and unstructured data.</p>
 </section>
-<section id="module-dataprofiler.plugins">
-<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-dataprofiler.plugins" title="Link to this heading">¶</a></h2>
-<dl class="py function">
-<dt class="sig sig-object py" id="dataprofiler.plugins.load_plugins">
-<span class="sig-prename descclassname"><span class="pre">dataprofiler.plugins.</span></span><span class="sig-name descname"><span class="pre">load_plugins</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#dataprofiler.plugins.load_plugins" title="Link to this definition">¶</a></dt>
-<dd><p>Digs through plugins folder for possible plugins to be imported
-and consequently added to the plugins_dict if properly decorated</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>None</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="dataprofiler.plugins.get_plugins">
-<span class="sig-prename descclassname"><span class="pre">dataprofiler.plugins.</span></span><span class="sig-name descname"><span class="pre">get_plugins</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">typ</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dataprofiler.plugins.get_plugins" title="Link to this definition">¶</a></dt>
-<dd><p>Fetches a dictionary of plugins of a certain type</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>typ</strong> – Broader classification/type of a plugin</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>dict</p>
-</dd>
-</dl>
-</dd></dl>
-
+<section id="algorithm-rationale">
+<h2>Algorithm Rationale<a class="headerlink" href="#algorithm-rationale" title="Link to this heading">¶</a></h2>
+<p>The algorithms used are designed for <strong>speed, scalability, and flexibility</strong>:</p>
+<ul class="simple">
+<li><p><strong>Streaming numeric methods</strong> (e.g., Welford’s algorithm, moment-based metrics, histogram binning) efficiently summarize data without full recomputation.</p></li>
+<li><p><strong>CNNs for entity detection</strong> are fast, high-throughput, and well-suited for sequence labeling tasks in production environments.</p></li>
+</ul>
+<p>These choices align with the tool’s goal of delivering fast, accurate data profiling with minimal configuration.</p>
+</section>
+<section id="assumptions-limitations">
+<h2>Assumptions &amp; Limitations<a class="headerlink" href="#assumptions-limitations" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p><strong>Consistent formatting</strong> of sensitive entities is assumed (e.g., standardized credit card or SSN formats).</p></li>
+<li><p><strong>Overlapping entity types</strong> (e.g., phone vs. SSN) may lead to misclassification without context.</p></li>
+<li><p><strong>Synthetic training data</strong> may not fully capture real-world diversity, reducing model accuracy on natural or unstructured text.</p></li>
+<li><p><strong>Quantile estimation</strong> (e.g., median) is approximate and based on binning rather than exact sorting.</p></li>
+</ul>
+</section>
+<section id="testing-validation">
+<h2>Testing &amp; Validation<a class="headerlink" href="#testing-validation" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>Comprehensive <strong>unit testing</strong> is performed across Python 3.9, 3.10, and 3.11.</p></li>
+<li><p>Tests are executed on every pull request targeting <cite>dev</cite> or <cite>main</cite> branches.</p></li>
+<li><p>All pull requests require <strong>two code reviewer approvals</strong> before merging.</p></li>
+<li><p>Testing includes correctness, performance, and compatibility checks to ensure production readiness.</p></li>
+</ul>
+</section>
+<section id="versioning-contributions">
+<h2>Versioning &amp; Contributions<a class="headerlink" href="#versioning-contributions" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>Versioning and development are managed via <strong>GitHub</strong>.</p></li>
+<li><p>Future changes must follow the guidelines in <cite>CONTRIBUTING.md</cite>, including:
+- Forking the repo and branching from <cite>dev</cite> or an active feature branch.
+- Ensuring <strong>80%+ unit test coverage</strong> for all new functionality.
+- Opening a PR and securing <strong>two approvals</strong> prior to merging.</p></li>
+</ul>
 </section>
 </section>
 
@@ -388,8 +391,26 @@ and consequently added to the plugins_dict if properly decorated</p>
       <footer>
         
         <div class="related-pages">
-          
-          
+          <a class="next-page" href="examples.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">Examples</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="graphs.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Graphs</div>
+                
+              </div>
+            </a>
         </div>
         <div class="bottom-of-page">
           <div class="left-details">
@@ -420,13 +441,12 @@ and consequently added to the plugins_dict if properly decorated</p>
         <div class="toc-tree-container">
           <div class="toc-tree">
             <ul>
-<li><a class="reference internal" href="#">dataprofiler.plugins package</a><ul>
-<li><a class="reference internal" href="#submodules">Submodules</a></li>
-<li><a class="reference internal" href="#module-dataprofiler.plugins">Module contents</a><ul>
-<li><a class="reference internal" href="#dataprofiler.plugins.load_plugins"><code class="docutils literal notranslate"><span class="pre">load_plugins()</span></code></a></li>
-<li><a class="reference internal" href="#dataprofiler.plugins.get_plugins"><code class="docutils literal notranslate"><span class="pre">get_plugins()</span></code></a></li>
-</ul>
-</li>
+<li><a class="reference internal" href="#">Architecture &amp; Design Overview</a><ul>
+<li><a class="reference internal" href="#overview">Overview</a></li>
+<li><a class="reference internal" href="#algorithm-rationale">Algorithm Rationale</a></li>
+<li><a class="reference internal" href="#assumptions-limitations">Assumptions &amp; Limitations</a></li>
+<li><a class="reference internal" href="#testing-validation">Testing &amp; Validation</a></li>
+<li><a class="reference internal" href="#versioning-contributions">Versioning &amp; Contributions</a></li>
 </ul>
 </li>
 </ul>
